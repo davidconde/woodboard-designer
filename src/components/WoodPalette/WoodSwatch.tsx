@@ -1,4 +1,6 @@
 import type { WoodSpecies } from '../../types';
+import { WOOD_TEXTURES } from '../../utils/woodTextures';
+import { TEXTURE_SIZE } from '../../utils/woodTexture';
 import styles from './WoodPalette.module.css';
 
 interface WoodSwatchProps {
@@ -16,29 +18,24 @@ export function WoodSwatch({ wood, selected, onClick }: WoodSwatchProps) {
     >
       <svg width="48" height="48" viewBox="0 0 48 48">
         <defs>
-          <filter
-            id={`swatch-${wood.id}`}
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            colorInterpolationFilters="sRGB"
+          <pattern
+            id={`swatch-pat-${wood.id}`}
+            patternUnits="userSpaceOnUse"
+            width={TEXTURE_SIZE}
+            height={TEXTURE_SIZE}
           >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency={wood.grain.baseFrequency}
-              numOctaves={wood.grain.numOctaves}
-              seed={wood.grain.seed}
-              stitchTiles="stitch"
+            <image
+              href={WOOD_TEXTURES[wood.id]}
+              width={TEXTURE_SIZE}
+              height={TEXTURE_SIZE}
             />
-            <feColorMatrix type="matrix" values={wood.colorMatrix} />
-          </filter>
+          </pattern>
         </defs>
         <rect
           width="48"
           height="48"
           rx="4"
-          filter={`url(#swatch-${wood.id})`}
+          fill={`url(#swatch-pat-${wood.id})`}
         />
       </svg>
       <span className={styles.swatchLabel}>{wood.name}</span>

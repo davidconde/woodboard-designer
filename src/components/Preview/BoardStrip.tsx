@@ -1,23 +1,18 @@
-import type { WoodId } from '../../types';
-
 interface BoardStripProps {
   x: number;
   width: number;
   height: number;
-  woodId: WoodId;
+  layerId: string;
 }
 
-export function BoardStrip({ x, width, height, woodId }: BoardStripProps) {
-  const filterId =
-    woodId === 'zebrawood' ? 'wood-zebrawood-stripes' : `wood-${woodId}`;
-
+export function BoardStrip({ x, width, height, layerId }: BoardStripProps) {
   return (
     <rect
       x={x}
       y={0}
       width={width}
       height={height}
-      filter={`url(#${filterId})`}
+      fill={`url(#wood-${layerId})`}
     />
   );
 }

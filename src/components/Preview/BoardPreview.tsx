@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { useBoard } from '../../context/BoardContext';
 import { totalBoardWidthCm } from '../../utils/scale';
-import { WoodFilterDefs } from './WoodFilterDefs';
+import { WoodPatternDefs } from './WoodPatternDefs';
 import { BoardStrip } from './BoardStrip';
 import styles from './PreviewPanel.module.css';
 
@@ -52,7 +52,7 @@ export function BoardPreview() {
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         xmlns="http://www.w3.org/2000/svg"
       >
-        <WoodFilterDefs />
+        <WoodPatternDefs layers={state.layers} />
         {state.layers.map((layer) => {
           const stripWidth = layer.widthCm * PX_PER_CM;
           const x = xOffset;
@@ -63,7 +63,7 @@ export function BoardPreview() {
                 x={x}
                 width={stripWidth}
                 height={svgHeight}
-                woodId={layer.woodId}
+                layerId={layer.id}
               />
               {/* Glue line */}
               {x > 0 && (

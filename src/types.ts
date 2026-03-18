@@ -14,12 +14,6 @@ export interface WoodSpecies {
   id: WoodId;
   name: string;
   baseColor: string;
-  grain: {
-    baseFrequency: string;
-    numOctaves: number;
-    seed: number;
-  };
-  colorMatrix: string;
 }
 
 export interface BoardLayer {
