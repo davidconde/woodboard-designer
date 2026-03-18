@@ -33,6 +33,7 @@ export type Units = 'cm' | 'in';
 export interface BoardState {
   layers: BoardLayer[];
   boardHeightCm: number;
+  bladeKerfCm: number;
   selectedWoodId: WoodId;
   units: Units;
 }
@@ -44,6 +45,7 @@ export type BoardAction =
   | { type: 'UPDATE_LAYER_WIDTH'; layerId: string; widthCm: number }
   | { type: 'MOVE_LAYER'; layerId: string; direction: 'up' | 'down' }
   | { type: 'SET_BOARD_HEIGHT'; heightCm: number }
+  | { type: 'SET_BLADE_KERF'; kerfCm: number }
   | { type: 'SELECT_WOOD'; woodId: WoodId }
   | { type: 'TOGGLE_UNITS' }
   | { type: 'LOAD_BOARD'; state: BoardState };

@@ -16,6 +16,7 @@ const defaultState: BoardState = {
     { id: generateId(), woodId: 'walnut', widthCm: 3 },
   ],
   boardHeightCm: 30,
+  bladeKerfCm: 0.2,
   selectedWoodId: 'cherry',
   units: 'cm',
 };
@@ -24,7 +25,8 @@ function loadState(): BoardState {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      return JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      return { ...defaultState, ...parsed };
     }
   } catch {
     // ignore
@@ -72,6 +74,8 @@ function boardReducer(state: BoardState, action: BoardAction): BoardState {
     }
     case 'SET_BOARD_HEIGHT':
       return { ...state, boardHeightCm: action.heightCm };
+    case 'SET_BLADE_KERF':
+      return { ...state, bladeKerfCm: action.kerfCm };
     case 'SELECT_WOOD':
       return { ...state, selectedWoodId: action.woodId };
     case 'TOGGLE_UNITS':
