@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BoardPreview } from './BoardPreview';
+import { BoardPreview3D } from './BoardPreview3D';
 import { BoardDimensions } from './BoardDimensions';
 import { CalculationsPanel } from './CalculationsPanel';
 import styles from './PreviewPanel.module.css';
@@ -27,7 +27,7 @@ export function PreviewPanel() {
       </div>
       {activeTab === 'preview' ? (
         <>
-          <BoardPreview />
+          <BoardPreview3D />
           <BoardDimensions />
         </>
       ) : (

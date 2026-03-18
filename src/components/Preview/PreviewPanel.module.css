@@ -59,6 +59,14 @@
   font-size: 16px;
 }
 
+.preview3d {
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e8e4dc 0%, #d5cfc5 100%);
+  min-height: 400px;
+}
+
 .dimensions {
   margin-top: 12px;
   text-align: center;
