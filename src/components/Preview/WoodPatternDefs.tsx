@@ -1,19 +1,20 @@
-import { WOOD_TEXTURES } from '../../utils/woodTextures';
+import { EDGE_TEXTURES, END_TEXTURES } from '../../utils/woodTextures';
 import { TEXTURE_SIZE } from '../../utils/woodTexture';
-import type { BoardLayer } from '../../types';
+import type { BoardLayer, GrainType } from '../../types';
 
 interface WoodPatternDefsProps {
   layers: BoardLayer[];
+  grainType: GrainType;
 }
 
-export function WoodPatternDefs({ layers }: WoodPatternDefsProps) {
-  // Create a unique pattern per layer so adjacent same-species strips
-  // show different grain (offset by layer index)
+export function WoodPatternDefs({ layers, grainType }: WoodPatternDefsProps) {
+  const textures = grainType === 'end' ? END_TEXTURES : EDGE_TEXTURES;
+
   return (
     <defs>
       {layers.map((layer, i) => {
-        const textureUrl = WOOD_TEXTURES[layer.woodId];
-        // Offset each strip's pattern vertically so same-wood strips look distinct
+        const textureUrl = textures[layer.woodId];
+        // Offset each strip's pattern so same-wood strips look distinct
         const yOffset = ((i * 137) % TEXTURE_SIZE);
         return (
           <pattern

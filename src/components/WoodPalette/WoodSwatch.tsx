@@ -1,5 +1,5 @@
 import type { WoodSpecies } from '../../types';
-import { WOOD_TEXTURES } from '../../utils/woodTextures';
+import { EDGE_TEXTURES } from '../../utils/woodTextures';
 import { TEXTURE_SIZE } from '../../utils/woodTexture';
 import styles from './WoodPalette.module.css';
 
@@ -25,7 +25,7 @@ export function WoodSwatch({ wood, selected, onClick }: WoodSwatchProps) {
             height={TEXTURE_SIZE}
           >
             <image
-              href={WOOD_TEXTURES[wood.id]}
+              href={EDGE_TEXTURES[wood.id]}
               width={TEXTURE_SIZE}
               height={TEXTURE_SIZE}
             />

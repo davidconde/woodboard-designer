@@ -65,7 +65,7 @@ export function BoardPreview() {
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         xmlns="http://www.w3.org/2000/svg"
       >
-        <WoodPatternDefs layers={state.layers} />
+        <WoodPatternDefs layers={state.layers} grainType={state.grainType} />
         {isEndGrain
           ? renderEndGrain(state, numSlices, svgWidth, svgHeight)
           : renderEdgeGrain(state, svgWidth, svgHeight)}

@@ -118,4 +118,87 @@ export function generateWoodTexture(config: WoodTextureConfig): string {
   return canvas.toDataURL('image/jpeg', 0.88);
 }
 
+export function generateEndGrainTexture(config: WoodTextureConfig): string {
+  const canvas = document.createElement('canvas');
+  canvas.width = TEXTURE_SIZE;
+  canvas.height = TEXTURE_SIZE;
+  const ctx = canvas.getContext('2d')!;
+  const imageData = ctx.createImageData(TEXTURE_SIZE, TEXTURE_SIZE);
+  const data = imageData.data;
+
+  const ringGrid = createNoiseGrid(GRID_SIZE, config.seed + 3000);
+  const fineGrid = createNoiseGrid(GRID_SIZE, config.seed + 4000);
+  const poreGrid = createNoiseGrid(GRID_SIZE, config.seed + 5000);
+
+  // Growth ring center — offset so we see partial arcs, not full circles
+  const cx = TEXTURE_SIZE * 0.3;
+  const cy = TEXTURE_SIZE * -0.2;
+
+  // Ring frequency based on grain count
+  const ringFreq = config.grainCount * 0.12;
+
+  for (let y = 0; y < TEXTURE_SIZE; y++) {
+    for (let x = 0; x < TEXTURE_SIZE; x++) {
+      // Distance from ring center
+      const dx = x - cx;
+      const dy = y - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // Noise to distort the rings (makes them less perfectly circular)
+      const distortNoise = fractalNoise(ringGrid, GRID_SIZE, x * 0.03, y * 0.03, 4);
+
+      // Growth ring pattern — concentric arcs
+      const ringVal = Math.sin(
+        (dist + distortNoise * config.grainWaviness * 60) * ringFreq * 0.1,
+      );
+
+      // Normalize to 0-1
+      const t = (ringVal + 1) * 0.5;
+
+      // Mix contrast
+      const mixT = 0.5 + (t - 0.5) * config.grainContrast * 0.8;
+      let [r, g, b] = lerpColor(config.darkColor, config.lightColor, mixT);
+
+      // Fine texture noise (more isotropic than edge grain — not stretched)
+      const fine = (fractalNoise(fineGrid, GRID_SIZE, x * 0.12, y * 0.12, 3) - 0.5) * 2;
+      r += fine * config.textureStrength * 60;
+      g += fine * config.textureStrength * 60;
+      b += fine * config.textureStrength * 60;
+
+      // Pore dots — small dark specks visible on end grain
+      const poreNoise = fractalNoise(poreGrid, GRID_SIZE, x * 0.4, y * 0.4, 2);
+      const poreThreshold = 0.72 - config.rayStrength * 0.15; // more pores for open-grain woods
+      if (poreNoise > poreThreshold) {
+        const poreIntensity = (poreNoise - poreThreshold) / (1 - poreThreshold);
+        const darken = poreIntensity * 30;
+        r -= darken;
+        g -= darken;
+        b -= darken;
+      }
+
+      // Zebrawood end grain: alternating light/dark ring bands
+      if (config.stripes) {
+        const stripeRingVal = Math.sin(
+          (dist + distortNoise * 40) * config.stripes.frequency * 0.04,
+        );
+        if (stripeRingVal > 0.15) {
+          const st = ((stripeRingVal - 0.15) / 0.85) * config.stripes.contrast;
+          r = r * (1 - st) + config.stripes.darkColor[0] * st;
+          g = g * (1 - st) + config.stripes.darkColor[1] * st;
+          b = b * (1 - st) + config.stripes.darkColor[2] * st;
+        }
+      }
+
+      const idx = (y * TEXTURE_SIZE + x) * 4;
+      data[idx] = clamp(r);
+      data[idx + 1] = clamp(g);
+      data[idx + 2] = clamp(b);
+      data[idx + 3] = 255;
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return canvas.toDataURL('image/jpeg', 0.88);
+}
+
 export { TEXTURE_SIZE };
