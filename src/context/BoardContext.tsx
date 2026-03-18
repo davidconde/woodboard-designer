@@ -16,9 +16,12 @@ const defaultState: BoardState = {
     { id: generateId(), woodId: 'walnut', widthCm: 3 },
   ],
   boardHeightCm: 30,
+  boardThicknessCm: 2,
   bladeKerfCm: 0.2,
   selectedWoodId: 'cherry',
   units: 'cm',
+  grainType: 'edge',
+  rotateEndGrain: false,
 };
 
 function loadState(): BoardState {
@@ -74,8 +77,14 @@ function boardReducer(state: BoardState, action: BoardAction): BoardState {
     }
     case 'SET_BOARD_HEIGHT':
       return { ...state, boardHeightCm: action.heightCm };
+    case 'SET_BOARD_THICKNESS':
+      return { ...state, boardThicknessCm: Math.max(1, action.thicknessCm || 1) };
     case 'SET_BLADE_KERF':
-      return { ...state, bladeKerfCm: action.kerfCm };
+      return { ...state, bladeKerfCm: action.kerfCm || 0 };
+    case 'SET_GRAIN_TYPE':
+      return { ...state, grainType: action.grainType };
+    case 'SET_ROTATE_END_GRAIN':
+      return { ...state, rotateEndGrain: action.rotate };
     case 'SELECT_WOOD':
       return { ...state, selectedWoodId: action.woodId };
     case 'TOGGLE_UNITS':

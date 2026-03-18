@@ -104,4 +104,53 @@ describe('calculateBoardRequirements', () => {
     expect(req.linearMaterialCm).toBe(100);
     expect(req.totalMaterialCm).toBeCloseTo(100.2);
   });
+
+  it('edge grain has no crosscut info', () => {
+    const result = calculateBoardRequirements([layer('walnut')], 30, 0.2, 'edge');
+    expect(result.crosscut).toBeNull();
+    expect(result.grandTotalWasteCm).toBe(0);
+  });
+
+  it('end grain computes crosscut waste', () => {
+    // 2 strips of 3cm walnut, 30cm board, 0.2cm kerf, 2cm thickness
+    // Slices: floor(30 / (2 + 0.2)) = floor(13.636) = 13
+    // Crosscuts: 12
+    // Board width: 6cm (2 × 3cm)
+    // Waste per crosscut: 0.2 × 6 = 1.2cm
+    // Total crosscut waste: 12 × 1.2 = 14.4cm
+    const layers = [layer('walnut', 3), layer('walnut', 3)];
+    const result = calculateBoardRequirements(layers, 30, 0.2, 'end', 2);
+
+    expect(result.crosscut).not.toBeNull();
+    expect(result.crosscut!.numSlices).toBe(13);
+    expect(result.crosscut!.crosscuts).toBe(12);
+    expect(result.crosscut!.boardWidthCm).toBe(6);
+    expect(result.crosscut!.wastePerCutCm).toBeCloseTo(1.2);
+    expect(result.crosscut!.totalCrosscutWasteCm).toBeCloseTo(14.4);
+  });
+
+  it('grand total includes both rip and crosscut waste', () => {
+    // 3 strips of walnut, 30cm board, 0.2cm kerf, 2cm thickness
+    // Rip waste: 2 cuts × 0.2 = 0.4cm
+    // Slices: floor(30 / 2.2) = 13, crosscuts: 12
+    // Board width: 9cm
+    // Crosscut waste: 12 × 0.2 × 9 = 21.6cm
+    // Grand total waste: 0.4 + 21.6 = 22.0cm
+    const layers = [layer('walnut', 3), layer('walnut', 3), layer('walnut', 3)];
+    const result = calculateBoardRequirements(layers, 30, 0.2, 'end', 2);
+
+    expect(result.totalKerfWasteCm).toBeCloseTo(0.4);
+    expect(result.crosscut!.totalCrosscutWasteCm).toBeCloseTo(21.6);
+    expect(result.grandTotalWasteCm).toBeCloseTo(22.0);
+  });
+
+  it('end grain with 0 kerf has no crosscut waste', () => {
+    const layers = [layer('walnut', 3), layer('walnut', 3)];
+    const result = calculateBoardRequirements(layers, 30, 0, 'end', 2);
+
+    expect(result.crosscut!.numSlices).toBe(15);
+    expect(result.crosscut!.crosscuts).toBe(14);
+    expect(result.crosscut!.totalCrosscutWasteCm).toBe(0);
+    expect(result.grandTotalWasteCm).toBe(0);
+  });
 });

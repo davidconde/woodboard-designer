@@ -10,6 +10,8 @@ export function CalculationsPanel() {
     state.layers,
     state.boardHeightCm,
     state.bladeKerfCm,
+    state.grainType,
+    state.boardThicknessCm,
   );
   const u = unitLabel(state.units);
 
@@ -27,7 +29,10 @@ export function CalculationsPanel() {
     <div className={styles.container}>
       <div className={styles.kerfNote}>
         Blade kerf: {fmt(state.bladeKerfCm)} {u}
+        {state.grainType === 'end' && <> &middot; End grain mode</>}
       </div>
+
+      <h3 className={styles.sectionTitle}>Rip Cuts (strips)</h3>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -59,7 +64,7 @@ export function CalculationsPanel() {
         </tbody>
         <tfoot>
           <tr className={styles.summaryRow}>
-            <td>Total</td>
+            <td>Rip total</td>
             <td>{calc.totalStripCount}</td>
             <td></td>
             <td></td>
@@ -68,6 +73,38 @@ export function CalculationsPanel() {
           </tr>
         </tfoot>
       </table>
+
+      {calc.crosscut && (
+        <>
+          <h3 className={styles.sectionTitle}>Crosscuts (end grain slices)</h3>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Slices</th>
+                <th>Crosscuts</th>
+                <th>Board Width</th>
+                <th>Waste / Cut</th>
+                <th>Total Crosscut Waste</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{calc.crosscut.numSlices}</td>
+                <td>{calc.crosscut.crosscuts}</td>
+                <td>{fmt(calc.crosscut.boardWidthCm)} {u}</td>
+                <td>{fmt(calc.crosscut.wastePerCutCm)} {u}</td>
+                <td className={styles.totalCell}>
+                  {fmt(calc.crosscut.totalCrosscutWasteCm)} {u}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </>
+      )}
+
+      <div className={styles.grandTotal}>
+        Total waste: {fmt(calc.grandTotalWasteCm)} {u}
+      </div>
     </div>
   );
 }

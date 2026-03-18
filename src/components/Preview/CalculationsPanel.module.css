@@ -72,3 +72,26 @@
   border-bottom: none;
   color: #1a1a1a;
 }
+
+.sectionTitle {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #666;
+}
+
+.sectionTitle + .table {
+  margin-bottom: 20px;
+}
+
+.grandTotal {
+  margin-top: 16px;
+  padding: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
