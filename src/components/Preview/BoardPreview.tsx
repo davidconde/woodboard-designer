@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, type JSX } from 'react';
 import { useBoard } from '../../context/BoardContext';
 import { totalBoardWidthCm } from '../../utils/scale';
 import { computeEndGrainSlices } from '../../utils/endGrain';
