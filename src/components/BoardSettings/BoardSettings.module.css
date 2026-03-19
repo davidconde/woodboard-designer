@@ -84,3 +84,30 @@
   height: 16px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .field {
+    font-size: 14px;
+  }
+
+  .inputGroup input {
+    width: 70px;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .toggleBtn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .checkField {
+    font-size: 14px;
+    padding: 4px 0;
+  }
+
+  .checkField input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+}

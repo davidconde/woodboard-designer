@@ -73,3 +73,27 @@
   font-size: 14px;
   color: #555;
 }
+
+@media (max-width: 768px) {
+  .panel {
+    padding: 16px;
+  }
+
+  .tab {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .preview3d {
+    min-height: 280px;
+  }
+
+  .previewContainer {
+    min-height: 200px;
+    padding: 16px;
+  }
+
+  .previewEmpty {
+    min-height: 200px;
+  }
+}

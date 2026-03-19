@@ -42,3 +42,23 @@
 .hiddenInput {
   display: none;
 }
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .subtitle {
+    display: none;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+}

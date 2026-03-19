@@ -43,3 +43,19 @@
   text-overflow: ellipsis;
   max-width: 56px;
 }
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .swatch {
+    padding: 6px;
+  }
+
+  .swatchLabel {
+    font-size: 11px;
+    max-width: 64px;
+  }
+}

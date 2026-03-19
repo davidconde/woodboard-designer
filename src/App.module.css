@@ -10,3 +10,9 @@
   display: flex;
   overflow: hidden;
 }
+
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+  }
+}

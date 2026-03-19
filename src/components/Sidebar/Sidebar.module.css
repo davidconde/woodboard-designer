@@ -9,3 +9,51 @@
   border-right: 1px solid #e5e7eb;
   overflow-y: auto;
 }
+
+.toggleBtn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-y: visible;
+    max-height: none;
+  }
+
+  .sidebar.collapsed .content {
+    display: none;
+  }
+
+  .toggleBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .toggleIcon {
+    font-size: 18px;
+    color: #888;
+    transition: transform 0.2s;
+  }
+
+  .toggleIcon.open {
+    transform: rotate(180deg);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
