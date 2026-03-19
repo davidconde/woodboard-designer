@@ -5,6 +5,9 @@ Parameters:
   DomainName:
     Type: String
     Default: woodboard-cutter.davidcondemarin.com
+  CertificateArn:
+    Type: String
+    Description: ARN of the ACM certificate (from cert stack in us-east-1)
 
 Resources:
   S3Bucket:
@@ -32,12 +35,6 @@ Resources:
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
-
-  Certificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Ref DomainName
-      ValidationMethod: DNS
 
   OriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
@@ -82,7 +79,7 @@ Resources:
             S3OriginConfig:
               OriginAccessIdentity: ''
         ViewerCertificate:
-          AcmCertificateArn: !Ref Certificate
+          AcmCertificateArn: !Ref CertificateArn
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
 

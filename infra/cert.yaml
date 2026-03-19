@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ACM certificate for woodboard-cutter.davidcondemarin.com (must be us-east-1 for CloudFront)
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: woodboard-cutter.davidcondemarin.com
+
+Resources:
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      ValidationMethod: DNS
+
+Outputs:
+  CertificateArn:
+    Value: !Ref Certificate
+    Export:
+      Name: woodboard-cutter-cert-arn
